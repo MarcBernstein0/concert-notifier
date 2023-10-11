@@ -13,8 +13,9 @@
 !*.go
 !go.sum
 !go.mod
-
 !.air.toml
+!Dockerfile
+!.dockerignore
 
 !README.md
 !LICENSE

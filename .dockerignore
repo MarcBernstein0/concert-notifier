@@ -1,0 +1,7 @@
+# Files to ingore
+.air.toml
+.env
+.gitignore
+
+# Dir to ingore
+/tmp 
