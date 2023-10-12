@@ -2,7 +2,9 @@ package spotify
 
 import (
 	"context"
+	"fmt"
 	"net/http"
+	"time"
 )
 
 type (
@@ -17,11 +19,11 @@ type (
 			clientId     string
 			clientSecret string
 		}
-		timeOut int
+		timeOut time.Duration
 	}
 )
 
-func New(baseURL, clientId, clientSecret string, client *http.Client, timeOut int) customClient {
+func New(baseURL, clientId, clientSecret string, client *http.Client, timeOut time.Duration) customClient {
 	return customClient{
 		baseURL: baseURL,
 		client:  client,
@@ -34,4 +36,17 @@ func New(baseURL, clientId, clientSecret string, client *http.Client, timeOut in
 		},
 		timeOut: timeOut,
 	}
+}
+
+func (c customClient) Fetch(ctx context.Context) ([]string, error) {
+	ctx, cancelCtx := context.WithTimeout(ctx, c.timeOut)
+	defer cancelCtx()
+
+	req, err := http.NewRequestWithContext(ctx, http.MethodGet, c.baseURL+"/me/top/artist", nil)
+	if err != nil {
+		return nil, err
+	}
+	fmt.Println(req)
+
+	return nil, nil
 }

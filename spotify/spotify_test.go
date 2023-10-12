@@ -1,6 +1,7 @@
 package spotify
 
 import (
+	"context"
 	"fmt"
 	"net/http"
 	"net/http/httptest"
@@ -45,4 +46,21 @@ func TestCreateCustomClient(t *testing.T) {
 	res := New("testEndpoint", "testId", "testSecret", http.DefaultClient, 20)
 	// Then
 	require.Equal(t, givenCustomClient, res)
+}
+
+func TestFetchSpotifyTopArtist(t *testing.T) {
+	// Given
+	res := New(server.URL, "testId", "testSecret", http.DefaultClient, 20)
+	expectedRes := []string{
+		"artist1",
+		"artist2",
+		"artist3",
+	}
+
+	// When
+	givenRes, givenErr := res.Fetch(context.Background())
+
+	// Then
+	require.NoError(t, givenErr)
+	require.ElementsMatch(t, expectedRes, givenRes)
 }
